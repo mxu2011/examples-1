@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,28 +29,37 @@ namespace CCloud
 {
     class Program
     {
-        static async Task<ClientConfig> LoadConfig(string configPath, string certDir)
+        static async Task<ClientConfig> LoadConfig()
         {
             try
             {
-                var cloudConfig = (await File.ReadAllLinesAsync(configPath))
-                    .Where(line => !line.StartsWith("#"))
-                    .ToDictionary(
-                        line => line.Substring(0, line.IndexOf('=')),
-                        line => line.Substring(line.IndexOf('=') + 1));
-
-                var clientConfig = new ClientConfig(cloudConfig);
-
-                if (certDir != null)
+                var path = Directory.GetCurrentDirectory();
+                var brokerList = "k8s-01-kafka.dev.be.ia.iafg.net:31090,k8s-01-kafka.dev.be.ia.iafg.net:31091,k8s-01-kafka.dev.be.ia.iafg.net:31092";
+                var config = new ClientConfig
                 {
-                    clientConfig.SslCaLocation = certDir;
-                }
+                    BootstrapServers = brokerList,
+                    ClientId = Dns.GetHostName(),
+                };
+                config.SecurityProtocol = SecurityProtocol.Ssl;
 
-                return clientConfig;
+                config.SslCaLocation = $"{path}/ssl/DS.SalVag-PmtLoadingService.crt";
+                config.SslKeystoreLocation = $"{path}/ssl/DS.SalVag-PmtLoadingService.keystore.jks";
+                config.SslKeystorePassword = "HW0jNxCx9YQ47pycVJ4UrQIIKxxFZ2DJ";
+
+
+                // works for DS_Dealer_Event_ASMB topic
+                config.SslCaLocation = $"{path}/ssl/DEV_ia-kafka-dev-ca.crt";
+                config.SslKeystoreLocation = $"{path}/ssl/DEV_DS.UnificationWebService.keystore.jks";
+                config.SslKeystorePassword = "JC9kfGwvyxkcBchwnP3KwKqFxEDcjWrY";
+                
+
+                //config.EnableIdempotence = true;
+
+                return config;
             }
             catch (Exception e)
             {
-                Console.WriteLine($"An error occured reading the config file from '{configPath}': {e.Message}");
+                Console.WriteLine($"An error occured {e.Message}");
                 System.Environment.Exit(1);
                 return null; // avoid not-all-paths-return-value compiler error.
             }
@@ -77,14 +87,14 @@ namespace CCloud
                 }
             }
         }
-        
+
         static void Produce(string topic, ClientConfig config)
         {
             using (var producer = new ProducerBuilder<string, string>(config).Build())
             {
                 int numProduced = 0;
                 int numMessages = 10;
-                for (int i=0; i<numMessages; ++i)
+                for (int i = 0; i < numMessages; ++i)
                 {
                     var key = "alice";
                     var val = JObject.FromObject(new { count = i }).ToString(Formatting.None);
@@ -120,7 +130,8 @@ namespace CCloud
             consumerConfig.EnableAutoCommit = false;
 
             CancellationTokenSource cts = new CancellationTokenSource();
-            Console.CancelKeyPress += (_, e) => {
+            Console.CancelKeyPress += (_, e) =>
+            {
                 e.Cancel = true; // prevent the process from terminating.
                 cts.Cancel();
             };
@@ -157,19 +168,15 @@ namespace CCloud
 
         static async Task Main(string[] args)
         {
-            if (args.Length != 3 && args.Length != 4) { PrintUsage(); }
-            
-            var mode = args[0];
-            var topic = args[1];
-            var configPath = args[2];
-            var certDir = args.Length == 4 ? args[3] : null;
-
-            var config = await LoadConfig(configPath, certDir);
+            var config = await LoadConfig();
+            var mode = "produce";
+            // var topic = "DS_StatementReadyToFinilize_ASMB";
+            var topic = "DS_Dealer_Event_ASMB";
 
             switch (mode)
             {
                 case "produce":
-                    await CreateTopicMaybe(topic, 1, 3, config);
+                    // await CreateTopicMaybe(topic, 1, 3, config);
                     Produce(topic, config);
                     break;
                 case "consume":

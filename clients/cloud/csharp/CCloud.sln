@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CCloud", "CCloud.csproj", "{EA6619C4-3343-4BB2-91D1-7A448B214F9C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IA.Payment.EftMessages", "..\IA.Payment.EftMessages\IA.Payment.EftMessages.csproj", "{4A407A3C-8036-4B1B-AF0E-61BB6302AAEC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{EA6619C4-3343-4BB2-91D1-7A448B214F9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA6619C4-3343-4BB2-91D1-7A448B214F9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA6619C4-3343-4BB2-91D1-7A448B214F9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A407A3C-8036-4B1B-AF0E-61BB6302AAEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A407A3C-8036-4B1B-AF0E-61BB6302AAEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A407A3C-8036-4B1B-AF0E-61BB6302AAEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A407A3C-8036-4B1B-AF0E-61BB6302AAEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

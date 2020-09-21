@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "0MH7xDvojVrlSuPLqXN+zPwsSV1XJX5WXaYRxotyTji1vYOz5HATuDokduvpTzbov/KxH9s/VInxZvnRnDlQ+A==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\mxu\\git\\github\\ConfluentKafka\\examples-1\\clients\\cloud\\IA.Payment.EftMessages\\IA.Payment.EftMessages.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\mxu\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\mxu\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

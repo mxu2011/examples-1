@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -12,6 +12,10 @@
 
   <ItemGroup>
     <Folder Include="ssl\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IA.Payment.EftMessages\IA.Payment.EftMessages.csproj" />
   </ItemGroup>
 
   <ItemGroup>

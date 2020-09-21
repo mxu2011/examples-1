@@ -14,6 +14,8 @@
 
 using Confluent.Kafka;
 using Confluent.Kafka.Admin;
+using ElectronicFundTransfer;
+using ElectronicFundTransfer.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -93,15 +95,54 @@ namespace CCloud
             using (var producer = new ProducerBuilder<string, string>(config).Build())
             {
                 int numProduced = 0;
-                int numMessages = 10;
+                int numMessages = 1;
                 for (int i = 0; i < numMessages; ++i)
                 {
+                    var msg = new BankResultMessage
+                    {
+                        Id = new Guid(),
+                        Specversion = "1.0",
+                        Type = BankResultType.PaymentSucceeded,
+                        Version = "1.0",
+                        Subject = "paymentid-123456",
+                        Time = DateTime.Now,
+                        Source = SourceSystem.UniFi,
+                        DataContentType = DataContentType.JSON,
+                        CorrelationId = new Guid(),
+                        Topic = BankResultTopic.Priv_SAL_Product_BankResultSuccessUnifi_Event,
+                        Env = EnvType.ASMB,
+                        data = new BankResultMessageBody
+                        {
+                            Context = "Bank Result Payment CMF",
+                            BankReportDate = DateTime.Now,
+                            BankReportName = "RBC",
+                            PaymentMethod = PaymentMethod.EFT,
+                            LanguageCode = "E",
+                            BankPaymentSuccessful = true,
+                            Currency = "CAD",
+                            CompanyCode = "IA",
+                            CustomerAccount = "20303",
+                            AuthorizationNumber = "77658",
+                            ContractDealerNumber = "BC999999",
+                            DepositDate = DateTime.Now,
+                            Amount = 12345.09,
+                            EftDetails = new PaymentEftDetails
+                            {
+                                BankNumber = "27272727",
+                                Branch = "23089",
+                                BankAccount = "33333",
+                                BeneficiaryName = "John Smith"
+                            }
+                        }
+                        
+                    };
+
                     var key = "alice";
-                    var val = JObject.FromObject(new { count = i }).ToString(Formatting.None);
+                    var val = JObject.FromObject(msg).ToString(Formatting.None);
 
                     Console.WriteLine($"Producing record: {key} {val}");
 
-                    producer.Produce(topic, new Message<string, string> { Key = key, Value = val },
+                    producer.Produce(topic, new Message<string, string> { Value = val },
                         (deliveryReport) =>
                         {
                             if (deliveryReport.Error.Code != ErrorCode.NoError)

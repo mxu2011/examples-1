@@ -31,16 +31,17 @@ namespace CCloud
 {
     class Program
     {
-        static async Task<ClientConfig> LoadConfig()
+        static async Task<ProducerConfig> LoadConfig()
         {
             try
             {
                 var path = Directory.GetCurrentDirectory();
                 var brokerList = "k8s-01-kafka.dev.be.ia.iafg.net:31090,k8s-01-kafka.dev.be.ia.iafg.net:31091,k8s-01-kafka.dev.be.ia.iafg.net:31092";
-                var config = new ClientConfig
+                var config = new ProducerConfig
                 {
                     BootstrapServers = brokerList,
                     ClientId = Dns.GetHostName(),
+                    LingerMs = 5
                 };
                 config.SecurityProtocol = SecurityProtocol.Ssl;
 
@@ -55,7 +56,7 @@ namespace CCloud
                 config.SslKeystorePassword = "JC9kfGwvyxkcBchwnP3KwKqFxEDcjWrY";
                 
 
-                //config.EnableIdempotence = true;
+                config.EnableIdempotence = true;
 
                 return config;
             }
@@ -90,7 +91,7 @@ namespace CCloud
             }
         }
 
-        static void Produce(string topic, ClientConfig config)
+        static void Produce(string topic, ProducerConfig config)
         {
             using (var producer = new ProducerBuilder<string, string>(config).Build())
             {

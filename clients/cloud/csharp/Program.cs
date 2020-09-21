@@ -91,7 +91,7 @@ namespace CCloud
             }
         }
 
-        static void Produce(string topic, ProducerConfig config)
+        static async Task ProduceAsync(string topic, ProducerConfig config)
         {
             using (var producer = new ProducerBuilder<string, string>(config).Build())
             {
@@ -101,7 +101,7 @@ namespace CCloud
                 {
                     var msg = new BankResultMessage
                     {
-                        Id = new Guid(),
+                        Id = Guid.NewGuid(),
                         Specversion = "1.0",
                         Type = BankResultType.PaymentSucceeded,
                         Version = "1.0",
@@ -109,7 +109,7 @@ namespace CCloud
                         Time = DateTime.Now,
                         Source = SourceSystem.UniFi,
                         DataContentType = DataContentType.JSON,
-                        CorrelationId = new Guid(),
+                        CorrelationId = Guid.NewGuid(),
                         Topic = BankResultTopic.Priv_SAL_Product_BankResultSuccessUnifi_Event,
                         Env = EnvType.ASMB,
                         data = new BankResultMessageBody
@@ -143,19 +143,10 @@ namespace CCloud
 
                     Console.WriteLine($"Producing record: {key} {val}");
 
-                    producer.Produce(topic, new Message<string, string> { Value = val },
-                        (deliveryReport) =>
-                        {
-                            if (deliveryReport.Error.Code != ErrorCode.NoError)
-                            {
-                                Console.WriteLine($"Failed to deliver message: {deliveryReport.Error.Reason}");
-                            }
-                            else
-                            {
-                                Console.WriteLine($"Produced message to: {deliveryReport.TopicPartitionOffset}");
-                                numProduced += 1;
-                            }
-                        });
+                    var dr = await producer.ProduceAsync(topic, new Message<string, string> { Value = val });
+
+                    Console.WriteLine($"Delivered '{dr.Value}' to '{dr.TopicPartitionOffset}'");
+
                 }
 
                 producer.Flush(TimeSpan.FromSeconds(10));
@@ -219,7 +210,7 @@ namespace CCloud
             {
                 case "produce":
                     // await CreateTopicMaybe(topic, 1, 3, config);
-                    Produce(topic, config);
+                    await ProduceAsync(topic, config);
                     break;
                 case "consume":
                     Consume(topic, config);

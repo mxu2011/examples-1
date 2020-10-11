@@ -7,15 +7,12 @@
 
   <ItemGroup>
     <PackageReference Include="Confluent.Kafka" Version="1.4.2" />
+    <PackageReference Include="DS.Kafka.CommonMessages" Version="1.0.3" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="ssl\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\IA.Payment.EftMessages\IA.Payment.EftMessages.csproj" />
   </ItemGroup>
 
   <ItemGroup>

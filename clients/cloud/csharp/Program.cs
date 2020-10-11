@@ -14,8 +14,6 @@
 
 using Confluent.Kafka;
 using Confluent.Kafka.Admin;
-using ElectronicFundTransfer;
-using ElectronicFundTransfer.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -25,6 +23,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using DS.Kafka.CommonMessages.events.PaymentProcessingResponse;
 
 
 namespace CCloud
@@ -109,35 +108,27 @@ namespace CCloud
                 int numMessages = 1;
                 for (int i = 0; i < numMessages; ++i)
                 {
-                    var msg = new BankResultMessage
+                    var msg = new PaymentProcessingResponse
                     {
-                        Id = Guid.NewGuid(),
+                        Id = Guid.NewGuid().ToString(),
                         Specversion = "1.0",
-                        Type = BankResultType.PaymentSucceeded,
+                        Type = PaymentProcessingResponseType.DS_PaymentSuccessful,
                         Version = "1.0",
-                        Subject = "paymentid-999999",
+                        Subject = "paymentid-6046188063",
                         Time = DateTime.Now,
-                        Source = SourceSystem.UniFi,
-                        DataContentType = DataContentType.JSON,
-                        CorrelationId = Guid.NewGuid(),
-                        Topic = BankResultTopic.Priv_SAL_Product_BankResultSuccessUnifi_Event,
-                        Env = EnvType.ASMB,
-                        data = new BankResultMessageBody
+                        Source = PaymentProcessingResponseSource.DS_CAN_EFT,
+                        Env = "ASMB",
+                        Data = new Data
                         {
                             Context = "Bank Result Payment CMF",
-                            BankReportDate = DateTime.Now,
-                            BankReportName = "RBC",
-                            PaymentMethod = PaymentMethod.EFT,
+                            PaymentMethod = DataPaymentMethod.EFT,
                             LanguageCode = "E",
-                            BankPaymentSuccessful = true,
-                            Currency = "CAD",
+                            Currency = DataCurrency.CAD,
                             CompanyCode = "IA",
-                            CustomerAccount = "20303",
                             AuthorizationNumber = "77658",
                             ContractDealerNumber = "BC999999",
-                            DepositDate = DateTime.Now,
                             Amount = 12345.09,
-                            EftDetails = new PaymentEftDetails
+                            EftDetails = new EftDetails
                             {
                                 BankNumber = "27272727",
                                 Branch = "23089",

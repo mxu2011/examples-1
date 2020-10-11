@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "0MH7xDvojVrlSuPLqXN+zPwsSV1XJX5WXaYRxotyTji1vYOz5HATuDokduvpTzbov/KxH9s/VInxZvnRnDlQ+A==",
+  "dgSpecHash": "8yoLs9UEivZEk8xEhTtLA4KVhhhD+m0qbW3TJ/ILS6TlxR6IcuEzjZdLXpKNfIa7W1t1Xk5BfvlrdZLWNtf/BA==",
   "success": true,
   "projectFilePath": "C:\\Users\\mxu\\git\\github\\ConfluentKafka\\examples-1\\clients\\cloud\\IA.Payment.EftMessages\\IA.Payment.EftMessages.csproj",
   "expectedPackageFiles": [

@@ -45,16 +45,26 @@ namespace CCloud
                 };
                 config.SecurityProtocol = SecurityProtocol.Ssl;
 
+                // wrong
                 config.SslCaLocation = $"{path}/ssl/DS.SalVag-PmtLoadingService.crt";
+                // correct
+                config.SslCaLocation = $"{path}/ssl/DEV_ia-kafka-dev-ca.crt";
                 config.SslKeystoreLocation = $"{path}/ssl/DS.SalVag-PmtLoadingService.keystore.jks";
                 config.SslKeystorePassword = "HW0jNxCx9YQ47pycVJ4UrQIIKxxFZ2DJ";
 
+                // Unifi2WebService
+                /*
+                config.SslCaLocation = $"{path}/ssl/DEV_ia-kafka-dev-ca.crt";
+                config.SslKeystoreLocation = $"{path}/ssl/DS.Unifi2WebService.keystore.jks";
+                config.SslKeystorePassword = "U8qEVYzOuwKGngJmvpZWuz93g9GBDokt";
+                */
 
                 // works for DS_Dealer_Event_ASMB topic
+                /*
                 config.SslCaLocation = $"{path}/ssl/DEV_ia-kafka-dev-ca.crt";
                 config.SslKeystoreLocation = $"{path}/ssl/DEV_DS.UnificationWebService.keystore.jks";
                 config.SslKeystorePassword = "JC9kfGwvyxkcBchwnP3KwKqFxEDcjWrY";
-                
+                */
 
                 config.EnableIdempotence = true;
 
@@ -105,7 +115,7 @@ namespace CCloud
                         Specversion = "1.0",
                         Type = BankResultType.PaymentSucceeded,
                         Version = "1.0",
-                        Subject = "paymentid-123456",
+                        Subject = "paymentid-999999",
                         Time = DateTime.Now,
                         Source = SourceSystem.UniFi,
                         DataContentType = DataContentType.JSON,
@@ -204,7 +214,8 @@ namespace CCloud
             var config = await LoadConfig();
             var mode = "produce";
             // var topic = "DS_StatementReadyToFinilize_ASMB";
-            var topic = "DS_Dealer_Event_ASMB";
+            var topic = "Priv_DS_Product_BankResultSuccessUnifi_Event_ASMB";
+            // var topic = "DS_Dealer_Event_ASMB";
 
             switch (mode)
             {

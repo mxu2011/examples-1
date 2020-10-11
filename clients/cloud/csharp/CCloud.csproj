@@ -43,6 +43,12 @@
     <None Update="ssl\DS.SalVag-PmtLoadingService_keystore_creds">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="ssl\DS.Unifi2WebService.keystore.jks">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ssl\DS.Unifi2WebService_keystore_creds">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="ssl\ia-kafka-dev-ca.crt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
